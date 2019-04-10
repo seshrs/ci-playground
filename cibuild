@@ -1,0 +1,5 @@
+#!/bin/bash
+# Copies contents of file.txt into docs/file_copy.txt.
+
+rm -f docs/file_copy.txt
+cp file.txt docs/file_copy.txt
