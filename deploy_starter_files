@@ -26,10 +26,8 @@ echo $remote_url
 set +x
 echo "Adding deploy key"
 # Add the access token
-remote_url=${remote_url/https:\/\//https://${GH_ACCESS_TOKEN}}
+remote_url=${remote_url/https:\/\//https://${GH_ACCESS_TOKEN}@}
 git remote set-url origin ${remote_url}
 set -x
 
 git push origin master
-
-exit 1 # To allow debugging of build
