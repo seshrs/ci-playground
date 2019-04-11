@@ -2,15 +2,15 @@ dist: trusty
 script:
  - ${TRAVIS_BUILD_DIR}/cibuild
 
-deploy:
-  provider: pages
-  skip_cleanup: true
-  github_token: ${GH_ACCESS_TOKEN}  # Set in the Travis settings page for this repo
-  keep_history: true
-  target_branch: master
-  verbose: true
-  on:
-    branch: master
+# deploy:
+#   provider: pages
+#   skip_cleanup: true
+#   github_token: ${GH_ACCESS_TOKEN}  # Set in the Travis settings page for this repo
+#   keep_history: true
+#   target_branch: master
+#   verbose: true
+#   on:
+#     branch: master
 
 # Always test the master branch, even when there's no pull request
 branches:

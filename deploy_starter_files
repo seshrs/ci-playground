@@ -1,0 +1,31 @@
+#!/bin/bash
+
+if [[ "$CONTINUOUS_INTEGRATION" != true || "$TRAVIS_PULL_REQUEST" != false ]]; then
+  echo "Skipping deployment because not CI on master."
+  exit
+fi
+
+echo "Starting deploy"
+
+set -x
+
+# Build the file to be committed
+rm -f docs/file_copy.txt
+cp file.txt docs/file_copy.txt
+
+# Make the commit
+git config user.name "TarBot"
+git config user.email "seshrs+tarbot@umich.edu"
+git commit -m "Rebuilt file_copy.txt"
+git remote -v # This is for debugging
+# We need to remove the remote and re-add the remote using the access token
+remote_url=`git config --get remote.origin.url`
+echo $remote_url
+set +x
+echo "Adding deploy key"
+# Add the access token
+remote_url=${remote_url/https:\/\//https://${GH_ACCESS_TOKEN}}
+git remote set-url origin ${remote_url}
+set -x
+
+git push
