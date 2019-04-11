@@ -9,6 +9,8 @@ echo "Starting deploy"
 
 set -x
 
+git checkout master
+
 # Build the file to be committed
 rm -f docs/file_copy.txt
 cp file.txt docs/file_copy.txt
