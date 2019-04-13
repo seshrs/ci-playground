@@ -1,6 +1,6 @@
 dist: trusty
-script:
- - ${TRAVIS_BUILD_DIR}/cibuild
+#script:
+# - ${TRAVIS_BUILD_DIR}/cibuild
 
 # deploy:
 #   provider: pages
@@ -11,6 +11,12 @@ script:
 #   verbose: true
 #   on:
 #     branch: master
+
+deploy:
+  provider: script
+  script: ${TRAVIS_BUILD_DIR}/cibuild
+  on:
+    branch: master
 
 # Always test the master branch, even when there's no pull request
 branches:
