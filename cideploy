@@ -3,8 +3,8 @@
 
 set -e
 
-echo "CIBUILD"
+echo "CIDEPLOY"
 
 ./deploy_starter_files
 
-echo "CIBUILD DONE"
+echo "CIDEPLOY DONE"

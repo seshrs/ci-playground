@@ -26,9 +26,9 @@ cp file.txt docs/file_copy_should_not_be_committed.txt
 git add docs/file_copy.txt
 
 # Make the commit
-git config user.name "TarBot"
-git config user.email "seshrs+tarbot@umich.edu"
-git commit -m "Rebuilt file_copy.txt"
+#git config user.name "TarBot"
+#git config user.email "seshrs+tarbot@umich.edu"
+git commit --author "${DEPLOY_NAME} <${DEPLOY_EMAIL}>" -m "Rebuilt file_copy.txt"
 git remote -v # This is for debugging
 # We need to remove the remote and re-add the remote using the access token
 remote_url=`git config --get remote.origin.url`
@@ -37,7 +37,8 @@ set +x
 echo "Adding deploy key"
 # Add the access token
 remote_url=${remote_url/https:\/\//https://${GH_ACCESS_TOKEN}@}
-git remote set-url origin ${remote_url}
+#git remote set-url origin ${remote_url}
+echo "Pushing to GitHub..."
+git push ${remote_url} master
 set -x
 
-git push origin master
