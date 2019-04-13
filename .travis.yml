@@ -1,6 +1,6 @@
 dist: trusty
-#script:
-# - ${TRAVIS_BUILD_DIR}/cibuild
+script:
+ - ${TRAVIS_BUILD_DIR}/cibuild
 
 # deploy:
 #   provider: pages
@@ -14,7 +14,7 @@ dist: trusty
 
 deploy:
   provider: script
-  script: ${TRAVIS_BUILD_DIR}/cibuild
+  script: ${TRAVIS_BUILD_DIR}/cideploy
   on:
     branch: master
 

@@ -1,10 +1,3 @@
 #!/bin/bash
-# Copies contents of file.txt into docs/file_copy.txt.
 
-set -e
-
-echo "CIBUILD"
-
-./deploy_starter_files
-
-echo "CIBUILD DONE"
+echo "Nothing to do in cibuild"
