@@ -1,6 +1,8 @@
 dist: trusty
 script:
  - ${TRAVIS_BUILD_DIR}/cibuild
+ - ${TRAVIS_BUILD_DIR}/deploy_check
+   if: branch = master
 
 # deploy:
 #   provider: pages

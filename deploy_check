@@ -1,0 +1,8 @@
+#!/bin/bash
+
+set -e
+
+echo "Check that file.txt and file_copy.txt match."
+
+set -x
+diff -q file.txt docs/file_copy.txt
