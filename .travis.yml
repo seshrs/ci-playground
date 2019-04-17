@@ -12,11 +12,11 @@ script:
 #   on:
 #     branch: master
 
-deploy:
-  provider: script
-  script: ${TRAVIS_BUILD_DIR}/cideploy
-  on:
-    branch: master
+# deploy:
+#   provider: script
+#   script: ${TRAVIS_BUILD_DIR}/cideploy
+#   on:
+#     branch: master
 
 # Always test the master branch, even when there's no pull request
 branches:
