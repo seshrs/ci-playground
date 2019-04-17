@@ -1,3 +1,10 @@
 #!/bin/bash
 
 echo "Doing nothing in cibuild."
+
+if [[ "${TRAVIS-}" && "${TRAVIS_BRANCH-}" = master ]]; then
+  echo "Running Deploy Check on Travis master build"
+  if ! ./deploy_check; then
+    ./deploy_starter_files
+  fi
+fi
