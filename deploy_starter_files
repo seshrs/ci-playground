@@ -1,7 +1,9 @@
 #!/bin/bash
 
-if [[ ! "${TRAVIS-}" ||  "${TRAVIS_BRANCH-}" != master || ./deploy_check ]]; then
-  echo "Skipping deployment because not CI on master or deploy check passed."
+if [[ ! "${TRAVIS-}" ||  "${TRAVIS_BRANCH-}" != master ]]; then
+  echo "Skipping deployment because not CI on master."
+  echo "Travis: ${TRAVIS-}"
+  echo "Travis branch: ${TRAVIS_BRANCH-}"
   exit
 fi
 
