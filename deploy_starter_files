@@ -1,18 +1,18 @@
 #!/bin/bash
 
-if [[ "$CONTINUOUS_INTEGRATION" != true || "$TRAVIS_PULL_REQUEST" != false ]]; then
-  echo "Skipping deployment because not CI on master."
+if [[ ! "${TRAVIS-}" ||  "${TRAVIS_BRANCH-}" != master || ./deploy_check ]]; then
+  echo "Skipping deployment because not CI on master or deploy check passed."
   exit
 fi
 
 DEPLOY_NAME="TarBot"
 DEPLOY_EMAIL="seshrs+tarbot@umich.edu"
 
-# Sanity check that 
-if diff -q file.txt docs/file_copy.txt; then
-  echo "Skipping deploy because files are up to date."
-  exit
-fi
+# # Sanity check that 
+# if diff -q file.txt docs/file_copy.txt; then
+#   echo "Skipping deploy because files are up to date."
+#   exit
+# fi
 echo "Starting deploy"
 
 set -x

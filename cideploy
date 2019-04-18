@@ -5,6 +5,10 @@ set -e
 
 echo "CIDEPLOY"
 
+# if [[ "${TRAVIS-}" && "${TRAVIS_BRANCH-}" = master && ! ./deploy_check ]]; then
+#     ./deploy_starter_files
+# fi
+
 ./deploy_starter_files
 
 echo "CIDEPLOY DONE"
