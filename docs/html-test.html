@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en-US">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>Jekyll Theme Primer Spec | Primer Spec is a Jekyll theme for GitHub Pages</title>
+<meta name="generator" content="Jekyll v3.8.5" />
+<meta property="og:title" content="Jekyll Theme Primer Spec" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Primer Spec is a Jekyll theme for GitHub Pages" />
+<meta property="og:description" content="Primer Spec is a Jekyll theme for GitHub Pages" />
+<meta property="og:site_name" content="Jekyll Theme Primer Spec" />
+<script type="application/ld+json">
+{"description":"Primer Spec is a Jekyll theme for GitHub Pages","@type":"WebSite","url":"/","name":"Jekyll Theme Primer Spec","headline":"Jekyll Theme Primer Spec","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+        <!-- BEGIN CUSTOM SPEC CODE -->
+        
+        <link rel="stylesheet" href="https://eecs485staff.github.io/primer-spec/assets/css/primer-spec-base.css">
+        <link rel="preload" href="https://eecs485staff.github.io/primer-spec/assets/js/primer_spec_plugin.min.js" as="script" crossorigin>
+        <!-- END CUSTOM SPEC CODE -->
+    </head>
+    <body>
+        <!-- Actual content -->
+        <!-- 
+            The explicit onClick handler is needed to force Safari (iOS) to propagate
+            click events for the sidebar.
+        -->
+        <div id="primer-spec-plugin-main-content" onClick="return true;">
+            
+            <h1 class="primer-spec-toc-ignore"><a href="/">Jekyll Theme Primer Spec</a></h1>
+            
+
+            <h1 class="primer-spec-toc-ignore" id="project-0-primer-spec">Project 0: Primer Spec</h1>
+
+<p>Due: <del>8pm, Apr 1, 2019</del> <strong>Anytime!</strong>  <em>This is an individual project.</em></p>
+
+<h1 id="introduction">Introduction</h1>
+<p>In Computer Science courses, project specifications tend to get <a href="https://web.archive.org/web/20180425010014/https://eecs485staff.github.io/p3-insta485-clientside/">really</a> <a href="https://web.archive.org/web/20190424183409/https://eecs280staff.github.io/p3-euchre/">long</a>. The intention for such a long document is good — they usually provide all the information that a student would need to successfully complete the project. However, this can also make it difficult for students to find information quickly — they often get lost in the document, and cannot easily find the information they need on the fly.</p>
+
+<!-- <img src="https://gdurl.com/npWU" alt="Infinite scroll..." height="250"/> -->
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: center"><img src="https://media.giphy.com/media/vvWhQsVAFkyisScAsM/200w_d.gif" alt="Infinite scroll..." height="150" /></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: center"><em>Infinite scroll…</em></td>
+    </tr>
+  </tbody>
+</table>
+
+<p>In Winter 2019, a student wrote on the EECS 485 Piazza:</p>
+<blockquote>
+  <p>I think it would be very useful to have a table of contents in a sidebar for project specs to make navigating the document easier. I often forget where specific sections are since the page is so long.</p>
+</blockquote>
+
+<p>This makes sense! Let’s solve the problem of long specs by adding a sidebar. We’ll do this by writing JavaScript code that can be “plugged in” to the project spec webpages. The JavaScript code we write will then generate a sidebar with a list of all the headings in the webpage.</p>
+
+<p>(You’re going to write JavaScript code similar to the one that powers the sidebar on this page!)</p>
+
+<h2 id="learning-goals">Learning Goals</h2>
+<p>This project is meant to be open-ended — it’s not autograded! At the end of this project, you should feel comfortable doing the following:</p>
+<ul>
+  <li>Use HTML and CSS to modify the design of a web page</li>
+  <li>Use JQuery and JavaScript to dynamically add content to the page</li>
+</ul>
+
+<p>If you wish, you can implement the other features of the official Primer Spec, as described in the optional <a href="#optional-other-features">Other Features</a> section.</p>
+
+<h2 id="contents">Contents</h2>
+
+<p>This spec will walk you through these parts:</p>
+
+<ol>
+  <li><a href="#setup">Set up your computer</a></li>
+  <li><a href="#html-sidebar">Add a hard-coded HTML sidebar</a></li>
+  <li><a href="#javascript-content-generator">Write JavaScript to generate the sidebar contents</a></li>
+  <li><a href="#optional-other-features">(Optional) Add other features</a></li>
+</ol>
+
+<h1 id="setup">Setup</h1>
+<p>Follow these steps to get your development environment set up.</p>
+
+<h3 id="install-the-dependencies">Install the dependencies</h3>
+<p>First make sure that you have Python 3 installed. If you’re on MacOS, you may have to <code class="highlighter-rouge">brew install python3</code> first.</p>
+
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">$</span> python3 <span class="nt">--version</span>  <span class="c"># NOTE: Your Python version may be different.</span>
+<span class="go">Python 3.7.4
+</span></code></pre></div></div>
+
+<h3 id="download-the-starter-files">Download the starter files</h3>
+<p>Download the starter files and untar them.</p>
+
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">$</span> <span class="nb">pwd</span>
+<span class="go">/users/seshrs
+</span><span class="gp">$</span> wget https://eecs485staff.github.io/primer-spec/demo/starter_files.tar.gz
+<span class="gp">$</span> <span class="nb">tar</span> <span class="nt">-xvzf</span> starter_files.tar.gz
+</code></pre></div></div>
+
+<h3 id="preview-the-site-on-your-browser">Preview the site on your browser</h3>
+<p>Have a look at <code class="highlighter-rouge">index.html</code> by opening the file in your favorite text editor. This file holds all the HTML that represents this project spec. Notice how we’ve already included some CSS to make the spec look like GitHub’s Primer theme.</p>
+
+<p>Use Python’s built-in static fileserver to view this HTML file on your browser. Open a console at the directory of the starter files, and then run the Python server.</p>
+
+<div class="language-console highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="gp">$</span> <span class="nb">pwd</span>
+<span class="go">/users/seshrs/primer-spec-spec
+</span><span class="gp">$</span> python3 <span class="nt">-m</span> http.server
+</code></pre></div></div>
+
+<p>Visit <a href="http://localhost:8000">http://localhost:8000</a> on your web browser. The page should look similar to this screenshot:</p>
+
+<p><img src="https://gdurl.com/1Kq10" height="250" alt="project page without sidebar" /></p>
+
+<p>The spec already looks pretty good, but it could certainly be improved with a sidebar.</p>
+
+<h1 id="html-sidebar">HTML Sidebar</h1>
+<p>In this section, you will add a sidebar to the HTML page and hard-code its contents. Although we’ll be writing some JavaScript code later in the project to generate the contents of the sidebar, it’s still a good idea to decide how it’s going to look.</p>
+
+<p>When you’re done with this section, your webpage will have a sidebar on the left, something like this screenshot:</p>
+
+<p><img src="https://gdurl.com/zJi1" height="250" alt="project page with sidebar" /></p>
+
+<p>Of course, <em>your</em> finished webpage doesn’t have to look like this. After all, this project isn’t autograded! (In fact, feel free to showcase your project spec design with us! Create an issue on <a href="https://github.com/eecs485staff/primer-spec/issues">our GitHub repository</a> with a screenshot of your design.)</p>
+
+<p>However, if you wish to emulate our design, here are some tips.</p>
+
+<h4 id="where-do-i-put-the-sidebar-code">Where do I put the sidebar code?</h4>
+<p>We added our sidebar HTML at the very top of the <code class="highlighter-rouge">body</code> tag, just before the the main content begins. (The main content is contained in a <code class="highlighter-rouge">div</code> with class <code class="highlighter-rouge">markdown-body</code>.)</p>
+
+<p>Our sidebar is <code class="highlighter-rouge">fixed</code> to the page with a constant width (we used <code class="highlighter-rouge">18em</code>), height and padding. You may need to push the main content a bit to make room for your sidebar. You should also consider what would happen if there were a lot of items in the sidebar.</p>
+
+<p>We recommend placing any CSS style definitions you need in <code class="highlighter-rouge">spec.css</code>.</p>
+
+<h4 id="do-i-have-to-hard-code-all-the-headings-in-the-page">Do I have to hard-code <em>all</em> the headings in the page?</h4>
+<p>No, but it’s a good idea to hard-code at least some of them, and randomly hard-code some other items in the sidebar. In particular, make sure to have a mix of heading indentations in your sidebar — consider styling each header level differently.</p>
+
+<p>When you style the various header levels, remember that you’ll be writing JavaScript code soon that will generate all of this HTML inside the sidebar. (Hint: Use CSS classes to style the header levels differently. Consider using the <em>name</em> of the HTML header tag in the class name.)</p>
+
+<h4 id="css-is-hard-help-please">CSS is hard. Help please?</h4>
+<p>Yeah, it has a bit of a learning curve. Google, StackOverflow and MDN are your best friends. Experiment with different CSS style attributes to see what works best.</p>
+
+<p><em><strong>Pro tip:</strong> Use <code class="highlighter-rouge">div</code> (unstylyed containers) and classes liberally. They make it easy to apply styles to collections of elements.</em></p>
+
+<p><em><strong>Pro tip:</strong> Use your browser’s “developer tools” to modify CSS styles on your page to dynamically see the effects of your changes.</em></p>
+
+<h1 id="javascript-content-generator">JavaScript Content Generator</h1>
+<p>The spec page looks great! But if you hard-coded all the headings on the page, you <em>know</em> how much time it takes to hard-code the sidebar contents. Imagine having to do that for several different project specs in a course website! It would be nice to <em>automatically</em> generate the sidebar contents for any web page. Let’s use JavaScript to write this content generator.</p>
+
+<p>(If you didn’t hard-code all the headings on the page, then your sidebar is still incomplete, so you need to write this JavaScript generator anyway.)</p>
+
+<p>Your generator will vary depending on your HTML sidebar design. Simple sidebar designs (for instance, just a list of all the headers with no differentiation) will require simpler generators. The sidebar we use in the official Primer Spec is more complex because we group “child sections” within divs to add further group styles.</p>
+
+<p>Here are some suggestions for getting started.</p>
+
+<h4 id="where-should-i-write-the-javascript-code">Where should I write the JavaScript code?</h4>
+<p>Write your code in <code class="highlighter-rouge">spec.js</code>. This code is loaded and executed at the very end, after all other content and scripts are loaded and executed. As a result, your code in <code class="highlighter-rouge">spec.js</code> will have access to <a href="https://api.jquery.com/">JQuery APIs</a>.</p>
+
+<h4 id="what-should-my-code-be-doing">What should my code be doing?</h4>
+<p>The end goal is to generate a list of headings on the page, and place that in the sidebar. At its simplest:</p>
+
+<ol>
+  <li>Find all “heading HTML elements” on the page. Remember to look for all the different header levels, from <code class="highlighter-rouge">h1</code> through <code class="highlighter-rouge">h6</code>.</li>
+  <li>Create a new HTML element for each “heading” you find. This HTML element could be a list item, or simply a text paragraph.</li>
+  <li>Find the sidebar (or the place where you want to display the “table of contents”). Insert the HTML elements that were created in step 2.</li>
+</ol>
+
+<h4 id="how-do-i-add-internal-links">How do I add internal links?</h4>
+<p>While you’re traversing the list of “heading elements” on the page, notice how they all have an <code class="highlighter-rouge">id</code> attribute. If you were to create an HTML anchor (<code class="highlighter-rouge">a</code>) with <code class="highlighter-rouge">href</code> set to <code class="highlighter-rouge">#{insert-id-here}</code>, the anchor would become an internal link. (Clicking the internal link will scroll the page to that section.)</p>
+
+<h1 id="optional-other-features">(Optional) Other Features</h1>
+<p>If you’ve completed the rest of this spec, congratulations! You’ve just built the core foundation of the official Primer Spec.</p>
+
+<p>Primer Spec has several other features that you could consider implementing in your own project. These reach goals are of varying difficulty, but could still be fun to work on. Choose your own challenge!</p>
+
+<p>Here are some of the optional features you could implement, in somewhat increasing order of difficulty:</p>
+
+<ul>
+  <li><a href="#collapsible-sidebar">Collapsible Sidebar</a></li>
+  <li><a href="#printer-friendliness">Printer-Friendliness</a></li>
+  <li><a href="#excludable-headers">Excludable Headers</a></li>
+  <li><a href="#currently-viewing-section">Currently-Viewing Section</a></li>
+  <li><a href="#mobile-friendliness">Mobile-Friendliness</a></li>
+</ul>
+
+<h2 id="collapsible-sidebar">Collapsible Sidebar</h2>
+<p>For some viewers, the sidebar can be visually distracting. It would be nice to allow viewers to hide the sidebar. This can be achieved using something as simple as a toggle button. However, consider emulating a better user experience similar to that of the <a href="https://eecs485staff.github.io/primer-spec">official Primer Spec theme</a> — using a hamburger icon on the top-left corner.</p>
+
+<p>One other thing to consider: Is simply hiding the sidebar enough? While <a href="#html-sidebar">styling the sidebar</a>, if you added CSS styles to push the main content to make room for the sidebar, then the content will look off-centered if the sidebar is simply hidden.</p>
+
+<h2 id="printer-friendliness">Printer-Friendliness</h2>
+<p>Many students like to print project specifications for easy offline reference. Try printing your project web page — how do you like its look?</p>
+
+<p>The solution is to simply add a JavaScript event handler when the page is printed. This handler should collapse the sidebar and recenter the main content, as described in the <a href="#collapsible-sidebar">Collapsible Sidebar</a> section. For a better user experience, restore the sidebar to its original state after the page has been printed.</p>
+
+<h2 id="excludable-headers">Excludable Headers</h2>
+<p>Sometimes, it is useful to exclude certain headers from the sidebar for aesthetic reasons. For example, on an <a href="https://eecs485staff.github.io/primer-spec">official Primer Spec page</a>:</p>
+
+<h5 id="this-header-will-show-in-the-sidebar">This header will show in the sidebar</h5>
+
+<h5 class="primer-spec-toc-ignore" id="but-this-header-will-not">But this header will not</h5>
+
+<p>The above header element is excluded from the sidebar because it has the class <code class="highlighter-rouge">primer-spec-toc-ignore</code>. Modify your JavaScript Content Generator to skip adding a section to the sidebar if the corresponding header element has this class attribute.</p>
+
+<h2 id="currently-viewing-section">Currently-Viewing Section</h2>
+<p>On an <a href="https://eecs485staff.github.io/primer-spec">official Primer Spec page</a>, viewers can see the section to which they have currently scrolled — the header in the sidebar is highlighted.</p>
+
+<p>To implement this feature, you will need to add a CSS class to indicate a “highlighted” section in the sidebar, and will then have to write JavaScript to apply the “highlighted” class to the correct section in the sidebar. Here’s a high level description of what the JavaScript code should do:</p>
+
+<ul>
+  <li>Add an event listener to scroll events. (After all, the “highlighted” section changes only when the viewer scrolls the page.)</li>
+  <li>Use this algorithm to find the currently highlighted section.
+    <ul>
+      <li>Iterate over all the headings on the page.</li>
+      <li>First reset the sidebar by removing any occurrences of the “highlighted” class.</li>
+      <li>If the “top” of the heading element is above the “distance scrolled by the user”, then “highlight” the corresponding sidebar section.</li>
+      <li>Stop iterating when remaining header elements are “below” the “distance scrolled by the user”.</li>
+    </ul>
+  </li>
+</ul>
+
+<p>It might be easier to implement this using JQuery APIs than plain JavaScript.</p>
+
+<p><em><strong>Pro tip:</strong> If you implemented the “<a href="#excludable-headers">Exclude Section</a>” feature above, you’ll have to take that into accound when highlighting the sidebar sections.</em></p>
+
+<h2 id="mobile-friendliness">Mobile-Friendliness</h2>
+<p>Sometimes, students and staff access project specifications from their mobile devices for quick reference. Try accessing your site from a mobile device. (One way to do this is to use your browser’s “developer tools” to simulate visiting your project webpage from a mobile device.)</p>
+
+<p>Their are two primary problems with the current mobile user experience:</p>
+<ol>
+  <li>The sidebar pushes the main content into a long column of single characters.</li>
+  <li>To collapse the sidebar, the viewer must scroll to the toggle button.</li>
+</ol>
+
+<p>There are multiple ways to solve these problems. The official Primer Spec theme addresses them by doing the following <em>only on mobile devices</em>:</p>
+
+<ol>
+  <li>The sidebar is overlaid <em>on top</em> of the content, instead of pushing it.</li>
+  <li>The sidebar is collapsed by default. A toggle button is always shown on top. Clicking a sidebar link, or clicking outside the sidebar, collapses the sidebar immediately.</li>
+</ol>
+
+<p>As you go along, you may find that other changes are needed to improve the mobile experience. For instance, since the sidebar collapses whenever a link is clicked, users no longer expect these internal links to accumulate browser history. (Clicking the “back button” should not just take them to a different section.) Continue exploring your project page from a mobile device to discover other user experience issues.</p>
+
+<h1 id="test-pre">Test Pre</h1>
+<pre>This is some pretext.
+
+Blah blalsjdhfkljsdhflhsdlkjfghkdlafgh lkagd lkdghs lfkgjhalkdsfgjh lka
+sdhfgksdhfgkhdsg
+sdlfjhsd
+
+ljshdflkjshdflgkhsdlkghslkdhg</pre>
+
+<h1 id="feedback">Feedback</h1>
+<p>If you have suggestions for improving this spec/demo, please create an issue on the <a href="https://github.com/eecs485staff/primer-spec/issues/">Primer Spec GitHub repository</a>. Alternatively, if you know exactly what you’d like to change, <a href="https://github.com/eecs485staff/primer-spec/blob/develop/docs/CONTRIBUTING.md">fork the repository and create a Pull Request</a>!</p>
+
+<h1 id="acknowledgmenets">Acknowledgmenets</h1>
+<p>This project spec was originally written to demonstrate the Primer Spec theme by <a href="https://github.com/seshrs">Sesh Sadasivam</a> in 2019.</p>
+
+<p>The structure and style of the project was strongly influenced by EECS 485 project specifications written by <a href="https://github.com/awdeorio">Andrew DeOrio</a>.</p>
+
+
+            
+        </div> <!-- .container-lg -->
+
+        
+
+        <!-- BEGIN CUSTOM SPEC CODE -->
+        <script src="https://eecs485staff.github.io/primer-spec/assets/js/primer_spec_plugin.min.js" crossorigin="anonymous"></script>
+        <!-- END CUSTOM SPEC CODE -->
+    </body>
+</html>
