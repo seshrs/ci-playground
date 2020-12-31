@@ -1,4 +1,4 @@
-name: upload-primer-spec-site-preview
+name: Upload Primer Spec Preview
 on:
   pull_request:
     paths:
@@ -11,6 +11,11 @@ jobs:
     steps:
       - name: 📁 Checkout code
         uses: actions/checkout@v2
+
+      - name: 💎 Setup Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: 3.0
 
       - name: 🛠 Build Jekyll site
         uses: limjh16/jekyll-action-ts@v2
