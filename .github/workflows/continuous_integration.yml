@@ -24,7 +24,7 @@ jobs:
 
       - name: 🗜 Compress site archive
         run: |
-          tar -C docs/_site -czf _site.tar.gz --dereference .
+          tar -C _site -czf _site.tar.gz --dereference .
 
       - name: 🚀 Upload preview site
         run: |
