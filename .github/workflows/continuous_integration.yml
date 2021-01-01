@@ -1,4 +1,4 @@
-name: Upload Primer Spec Preview
+name: Generate spec preview
 on:
   pull_request:
     paths:
@@ -6,7 +6,7 @@ on:
 
 jobs:
   build-and-upload-site:
-    name: Build and upload Primer Spec site
+    name: Build and upload
     runs-on: ubuntu-latest
     steps:
       - name: 📁 Checkout code
@@ -28,12 +28,22 @@ jobs:
 
       - name: 🚀 Upload preview site
         run: |
-          pr_number=$(jq --raw-output .pull_request.number "$GITHUB_EVENT_PATH")
-          echo "Uploading site preview for PR #$pr_number"
+          echo "Uploading site preview for PR #$PR_NUMBER"
           curl \
-            -F "repo=seshrs/ci-playground" \
-            -F "app_secret=[j%^GYLz]@sO" \
-            -F "pr_number=$pr_number" \
+            -F "repo=$REPO" \
+            -F "app_secret=$APP_SECRET" \
+            -F "pr_number=$PR_NUMBER" \
             -F "site=@_site.tar.gz" \
             https://preview.seshrs.ml/upload-site-preview
-          echo "Preview should be available at https://preview.seshrs.ml/previews/seshrs/ci-playground/$pr_number/"
+          echo "Preview should be available at https://preview.seshrs.ml/previews/seshrs/ci-playground/$PR_NUMBER/"
+        env:
+          PR_NUMBER: ${{ github.event.number }}
+          REPO: "seshrs/ci-playground"
+          APP_SECRET: "[j%^GYLz]@sO"
+
+      - name: 💬 Comment on PR
+        uses: marocchino/sticky-pull-request-comment@v2
+        with:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          message: |
+            The spec from this PR is available at https://preview.seshrs.ml/previews/seshrs/ci-playground/${{ github.event.number }}/.
