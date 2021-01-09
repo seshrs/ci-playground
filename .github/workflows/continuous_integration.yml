@@ -25,7 +25,5 @@ jobs:
       - name: 🚀 Upload to Primer Spec Preview
         uses: seshrs/upload-to-primer-spec-preview@de46aa4fae650e0e31f9cd66f0122aad527ee8ee
         with:
-
-        env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           PRIMER_SPEC_PREVIEW_SECRET: "[j%^GYLz]@sO"
