@@ -23,7 +23,7 @@ jobs:
           enable_cache: true
 
       - name: 🚀 Upload to Primer Spec Preview
-        uses: seshrs/upload-to-primer-spec-preview@62c683aa70296f1585622dd857d08553cea07d78
+        uses: seshrs/upload-to-primer-spec-preview@v1
         with:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           PRIMER_SPEC_PREVIEW_SECRET: "[j%^GYLz]@sO"
