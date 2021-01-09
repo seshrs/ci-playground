@@ -22,28 +22,10 @@ jobs:
         with:
           enable_cache: true
 
-      - name: 🗜 Compress site archive
-        run: |
-          tar -C _site -czf _site.tar.gz --dereference .
-
-      - name: 🚀 Upload preview site
-        run: |
-          echo "Uploading site preview for PR #$PR_NUMBER"
-          curl \
-            -F "repo=$REPO" \
-            -F "app_secret=$APP_SECRET" \
-            -F "pr_number=$PR_NUMBER" \
-            -F "site=@_site.tar.gz" \
-            https://preview.seshrs.ml/upload-site-preview
-          echo "Preview should be available at https://preview.seshrs.ml/previews/seshrs/ci-playground/$PR_NUMBER/"
-        env:
-          PR_NUMBER: ${{ github.event.number }}
-          REPO: "seshrs/ci-playground"
-          APP_SECRET: "[j%^GYLz]@sO"
-
-      - name: 💬 Comment on PR
-        uses: marocchino/sticky-pull-request-comment@v2
+      - name: 🚀 Upload to Primer Spec Preview
+        uses: seshrs/upload-to-primer-spec-preview@de46aa4fae650e0e31f9cd66f0122aad527ee8ee
         with:
+
+        env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          message: |
-            The spec from this PR is available at https://preview.seshrs.ml/previews/seshrs/ci-playground/${{ github.event.number }}/.
+          PRIMER_SPEC_PREVIEW_SECRET: "[j%^GYLz]@sO"
