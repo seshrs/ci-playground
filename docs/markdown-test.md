@@ -12,6 +12,7 @@ Line 1
 Line 1.5 \
 Line 2  
 Line 3
+Line 4
 
 # Introduction
 In Computer Science courses, project specifications tend to get [really](https://web.archive.org/web/20180425010014/https://eecs485staff.github.io/p3-insta485-clientside/) [long](https://web.archive.org/web/20190424183409/https://eecs280staff.github.io/p3-euchre/). The intention for such a long document is good — they usually provide all the information that a student would need to successfully complete the project. However, this can also make it difficult for students to find information quickly — they often get lost in the document, and cannot easily find the information they need on the fly.

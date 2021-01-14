@@ -1,0 +1,29 @@
+name: Generate spec preview
+on:
+  pull_request:
+    paths:
+      - "docs/**"
+
+jobs:
+  build-and-upload-site:
+    name: Build and upload
+    runs-on: ubuntu-latest
+    steps:
+      - name: 📁 Checkout code
+        uses: actions/checkout@v2
+
+      - name: 💎 Setup Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: 3.0
+
+      - name: 🛠 Build Jekyll site
+        uses: limjh16/jekyll-action-ts@v2
+        with:
+          enable_cache: true
+
+      - name: 🚀 Upload to Primer Spec Preview
+        uses: seshrs/upload-to-primer-spec-preview@v1
+        with:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PRIMER_SPEC_PREVIEW_SECRET: "[j%^GYLz]@sO"
