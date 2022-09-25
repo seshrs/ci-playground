@@ -1,5 +1,22 @@
+# This config file renders the "primer-spec" theme from:
+# https://github.com/eecs485staff/primer-spec
+# This theme is built on the default GitHub Markdown theme "Primer", and
+# optionally renders a sidebar to easily navigate project specs.
+
+title: "CI Playground"
+
+# Build settings
 remote_theme: eecs485staff/primer-spec
 plugins:
-    - jekyll-remote-theme
-
-markdown: GFM
+  - jekyll-remote-theme
+  - jekyll-optional-front-matter
+  - jekyll-readme-index
+  - jekyll-relative-links
+  - jekyll-default-layout
+  - jekyll-seo-tag
+  - jekyll-github-metadata
+kramdown:
+  input: GFM
+readme_index:
+  remove_originals: true
+  with_frontmatter: true
