@@ -1,14 +1,10 @@
 # GitHub Pages Configuration
 #
 # This workflow bundles starter-files into a tarball and deploys the website.
-#
-# EECS 485 contributing docs and GitHub Action docs:
-# https://github.com/eecs485staff/p1-insta485-static/blob/main/CONTRIBUTING.md
-# https://docs.github.com/en/pages/getting-started-with-github-pages/configuring-a-publishing-source-for-your-github-pages-site#publishing-with-a-custom-github-actions-workflow
 name: Deploy website with GitHub Pages
 
 on:
-  # Run on all pushes to main
+  # Run on all pushes to main.
   push:
     branches: ["main", "master"]
   # Allows you to run this workflow manually from the Actions tab
@@ -26,8 +22,7 @@ concurrency:
   cancel-in-progress: true
 
 # We have two jobs:
-# (1) A "build" job that's responsible for creating the tarball and building
-#     the website using Jekyll.
+# (1) A "build" job that's responsible for building the website using Jekyll.
 # (2) A "deploy" job that pushes the output of the build job to GitHub Pages.
 jobs:
   # (1) Build job
@@ -41,28 +36,16 @@ jobs:
       - name: 📁 Checkout code
         uses: actions/checkout@v2
 
-      # A Ruby environment is required to build Jekyll websites. Use the
-      # official GH action provided by Ruby.
-      # Docs: https://github.com/ruby/setup-ruby
-      - name: 💎 Setup Ruby
-        uses: ruby/setup-ruby@v1
-        with:
-          ruby-version: "3.0"
-
       - name: 🗜 Create starter-files tarball
         run: |
           cd docs
           tar -czvf starter-files.tar.gz *
 
-      # Build the Jekyll site. This GH action from the marketplace is
-      # indirectly endorsed by Jekyll, and simply builds the Jekyll site
-      # without deploying it. The Jekyll build output is placed in an `_site/`
-      # directory.
-      # Docs: https://github.com/limjh16/jekyll-action-ts
-      - name: 🛠 Build Jekyll site
-        uses: limjh16/jekyll-action-ts@v2
-        with:
-          enable_cache: true
+      # Build the Primer Spec website. The action places the fully-built
+      # website in an `_site/` directory.
+      # Docs: https://github.com/seshrs/build-primer-spec-action
+      - name: 🛠 Build Primer Spec website
+        uses: seshrs/build-primer-spec-action
 
       # Upload the _site directory created in the above step for use by
       # GitHub Pages.
