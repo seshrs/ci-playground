@@ -4,6 +4,7 @@
 # optionally renders a sidebar to easily navigate project specs.
 
 title: "CI Playground"
+repository: seshrs/ci-playground
 
 # Build settings
 remote_theme: eecs485staff/primer-spec
