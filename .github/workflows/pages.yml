@@ -45,7 +45,7 @@ jobs:
       # website in an `_site/` directory.
       # Docs: https://github.com/seshrs/build-primer-spec-action
       - name: 🛠 Build Primer Spec website
-        uses: seshrs/build-primer-spec-action@v1
+        uses: seshrs/build-primer-spec-action@main
 
       # Upload the _site directory created in the above step for use by
       # GitHub Pages.
