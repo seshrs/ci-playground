@@ -4,7 +4,7 @@ latex: true
 mermaid: true
 ---
 
-Nested Spec test: Project 0
+Nested Spec test: Project 0.5
 ======================
 
 Due: ~~8pm, Apr 1, 2019~~ **Anytime!**  _This is an individual project._
