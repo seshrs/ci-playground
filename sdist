@@ -1,0 +1,97 @@
+#!/bin/bash
+#
+# Build source distribution, including autograder, instruction solution and
+# starter files tarballs.
+#
+# Sesh Sadasivam <seshrs@umich.edu> and Andrew DeOrio <awdeorio@umich.edu>
+
+# Stop on errors, do not print commands
+set -Eeuo pipefail
+set +x
+
+# Parse options
+OPT_STARTER_FILES_ONLY=0
+OPT_FORCE=0
+if [ "$#" -gt 1 ]; then
+  echo "Error: expected no more than one option"
+  exit 1
+fi
+if [ "${1-}" = "--help" ];  then
+  echo "Usage: $0 [OPTION]"
+  echo ""
+  echo "  --help                Print this message"
+  echo "  --starter-files-only  Skip submit and autograder tarbal"
+  echo "  --force               Do not check git status"
+  exit 0
+elif [ "${1-}" == "--starter-files-only" ]; then
+  OPT_STARTER_FILES_ONLY=1
+elif [ "${1-}" == "--force" ]; then
+  OPT_FORCE=1
+elif [ "${1-}" == "" ]; then
+  # defaults
+  OPT_STARTER_FILES_ONLY=0
+  OPT_FORCE=0
+else
+  echo "Error: unrecognized option '${1}'"
+  exit 1
+fi
+
+# Avoid ".__*" files on macOS
+if [[ $OSTYPE == 'darwin'* ]]; then
+  MACOS_TAR_OPT="--disable-copyfile"
+fi
+
+# Abort if repo is dirty to prevent uncommitted or untracked files from being
+# squashed.  Override with --force option.
+if [ $OPT_FORCE -eq 0 ]; then
+  GIT_STATUS=$(git status --porcelain)
+  if [ -n "$GIT_STATUS" ]; then
+    echo "Error: repo contains uncommitted changes.  To override and create"
+    echo "filthy, dirty tarballs, try:"
+    echo "  $0 --force"
+    exit 1
+  fi
+  git clean -xdfq starter_files autograder
+fi
+
+tar ${MACOS_TAR_OPT-} -czf docs/starter_files.tar.gz starter_files
+ls docs/starter_files.tar.gz
+
+if [ $OPT_STARTER_FILES_ONLY -eq 1 ]; then
+  exit
+fi
+
+# Create submission tarball from instructor solution
+#
+# WARNING: this is a copied command from the spec.  I added --dererence to
+# avoid symlinks.
+pushd solution > /dev/null
+tar \
+  -czf submit.tar.gz \
+  ${MACOS_TAR_OPT-} \
+  --dereference \
+  --exclude '*__pycache__*' \
+  --exclude '*tmp*' \
+  pyproject.toml \
+  bin \
+  mapreduce
+popd > /dev/null
+ls solution/submit.tar.gz
+
+# Create tarball of autograder test cases and delete old tarballs.
+#
+# The version string is the first 8 characters of the git commit hash, e.g.,
+# "autograder-106dc71d.tar.gz".  If the repo is dirty (modifed files that are
+# not yet committed), then the version string will contain the word "dirty",
+# e.g., "autograder-106dc71d-dirty.tar.gz"
+rm -f autograder-*.tar.gz
+VERSION=$(git describe --match=NeVeRmAtCh --always --abbrev=8 --dirty)
+tar \
+  -czf "autograder-${VERSION}.tar.gz" \
+  ${MACOS_TAR_OPT-} \
+  --dereference \
+  --exclude '*__pycache__*' \
+  --exclude '.pytest*' \
+  autograder/ \
+  install
+ls "autograder-${VERSION}.tar.gz"

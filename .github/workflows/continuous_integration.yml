@@ -1,0 +1,106 @@
+# GitHub Continuous Integration Configuration
+#
+# EECS 485 contributing docs and GitHub Action docs:
+# https://github.com/eecs485staff/p1-insta485-static/blob/main/CONTRIBUTING.md
+# https://docs.github.com/en/free-pro-team@latest/actions
+name: regression tests
+
+# Define conditions for when to run this action
+on:
+  # Run on all pull requests with main as the target branch.  By default, if
+  # unspecified, the types that are selected are opened, reopened, and
+  # synchronized. So if you don't also add ready_for_review, CI wouldn't run on
+  # a PR that's marked ready for review after having previously been a
+  # draft.
+  pull_request:
+    branches:
+      - main
+    types:
+      - opened
+      - reopened
+      - ready_for_review
+      - synchronize # When the PR's head branch is updated
+  push: # Run on all pushes to main
+    branches:
+      - main
+
+# A workflow run is made up of one or more jobs.  Each job has an id.
+jobs:
+  test:
+    name: test-suite-python${{ matrix.python-version }}
+
+    # Don't run on draft PRs.
+    if: ${{ ! github.event.pull_request.draft }}
+
+    runs-on: ${{ matrix.os }}
+    strategy:
+      # Define OS and Python versions to use. We are only testing against one
+      # Python version to conserve GH actions credits
+      matrix:
+        python-version: ["3.8"]
+        os: [ubuntu-latest]
+
+    # Sequence of tasks for this job
+    steps:
+      # Check out latest code using a pre-existing GH action
+      # Docs: https://github.com/actions/checkout
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      # Regression tests should only be run when code is changed.
+      # File changes in the current pull request or push must be
+      # searched to detect whether any code changes were made.
+      # If we find that only docs were changed, we will not waste
+      # GH Action credits to run the regression test suite.
+      # Docs: https://github.com/dorny/paths-filter
+      - uses: dorny/paths-filter@v2
+        name: Check for code changes
+        id: changes
+        with:
+          filters: |
+            notdocs:
+              - "!docs/**"
+
+      # Configure pip cache using a pre-existing GH action
+      # Docs: https://github.com/actions/cache
+      - name: Cache pip
+        uses: actions/cache@v2
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
+          restore-keys: |
+            ${{ runner.os }}-pip-
+
+      # Set up Python using a pre-existing GH action
+      # Docs: https://github.com/actions/setup-python
+      - name: Set up Python ${{ matrix.python-version }}
+        if: ${{ steps.changes.outputs.notdocs == 'true' }}
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      # Install dependencies
+      - name: Install dependencies
+        if: ${{ steps.changes.outputs.notdocs == 'true' }}
+        run: |
+          ./install solution
+
+      # Run tests
+      - name: Run tests
+        if: ${{ steps.changes.outputs.notdocs == 'true' }}
+        run: |
+          source env/bin/activate
+          ./test
+
+      # Uncomment this chunk of YML code to open an SSH debug session to the GH
+      # actions server in case of a hard-to-debug failure. The SSH session is
+      # provided by tmate via a pre-existing GH action.
+      # Docs: https://github.com/mxschmitt/action-tmate
+      #
+      # Warning: use this sparingly since it will consume GitHub action credits
+      # until the SSH session is closed.
+      # \/ UNCOMMENT \/
+      # - name: Open SSH session on test failure
+      #   if: ${{ failure() }}
+      #   uses: mxschmitt/action-tmate@v3
+      # /\ UNCOMMENT /\
