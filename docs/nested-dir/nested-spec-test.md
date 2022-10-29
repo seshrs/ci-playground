@@ -2,6 +2,7 @@
 layout: spec
 latex: true
 mermaid: true
+title: Project 0.5
 ---
 
 Nested Spec test: Project 0.5
