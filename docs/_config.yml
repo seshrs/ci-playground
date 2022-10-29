@@ -25,3 +25,4 @@ readme_index:
 primerSpec:
   sitemap:
     label: Tutorials
+baseurl: ci-playground
